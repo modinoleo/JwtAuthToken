@@ -1,0 +1,118 @@
+﻿@model JwtAuth.Web.Models.MemberViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+    Members
+    </h1>
+    <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Members</a></li>
+    
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Manage</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <form method="get" action="/Loan/Index">
+            <label for="name" class="control-label col-sm-2">FIND USER </label>
+            <input type="text" value='' class="form-group col-sm-2" name="SearchString">
+            <label for="name" class="control-label col-sm-1">STATUS </label>
+            <select name="Status" class="form-select col-sm-2">
+                <option value=" ">ALL</option>
+                <option value=0>PENDING</option>
+                <option value=1>APPROVED</option>
+            </select>
+
+            <button type="submit" class="btn btn-info col-sm-1">Search</button>
+            </form>
+
+            <table id="example1" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>USER NAME</th>
+                <th>NAME</th>
+                <th>EMAIL</th>
+                <th>MOBILE NO</th>
+                <th>IS APPROVED</th>
+                <th>ACTION</th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Members)
+                {
+                    <tr>
+                    <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                    <td>@Html.DisplayFor(modelItem => item. FirstName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MobileNo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IsVerified)</td>
+                    <td><a asp-action="Index" asp-route-UserName="@item.UserName">Approve</a></td>
+                    </tr>
+                }
+            </table>
+
+            <ul class="pagination">  
+                @for (int i = 1; i <= Model.PageCount(); i++)
+                {  
+                    <li class="@(i == Model.CurrentPage ? "page-item active" : "page-item")">  
+                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a> 
+                    </li>  
+                }  
+            </ul>  
+                    
+        </div>
+        <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+   
+<!-- DataTables -->
+<script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $('#example1').DataTable();
+    });
+    function Delete(id){
+        var txt;
+        var r = confirm("Are you sure you want to Delete?");
+        if (r == true) {
+            
+            $.ajax(
+            {
+                type: "POST",
+                url: '@Url.Action("Delete", "Loan")',
+                data: {
+                    id: id
+                },
+                error: function (result) {
+                    alert("error");
+                },
+                success: function (result) {
+                    if (result == true) {
+                        var baseUrl="/Loan";
+                        window.location.reload();
+                    }
+                    else {
+                        alert("There is a problem, Try Later!");
+                    }
+                }
+            });
+        } 
+    }

@@ -1,0 +1,2 @@
+﻿dotnet ef dbcontext scaffold "Server=DESKTOP-RJ0TQDQ\SQLEXPRESS;Database=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Contexts --project JwtAuth.Web --force
+dotnet ef database update

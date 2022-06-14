@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Lucky888.Web/bin/Debug/net6.0
+/Lucky888.Web/obj
+/Lucky888.Unity/UnityBasics/.vs/UnityBasics
+/Lucky888.Unity/UnityBasics/obj/Debug
